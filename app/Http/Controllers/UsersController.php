@@ -132,8 +132,8 @@ class UsersController extends BaseController{
 
             }
         else:
-                $OXOResponse = new \Oxoresponse\OXOResponse("Kindly check your email");
-                $OXOResponse->addErrorToList("Email does not exist");
+                $OXOResponse = new \Oxoresponse\OXOResponse("Kindly check your email ");
+                //$OXOResponse->addErrorToList("Email does not exist");
                 $OXOResponse->setErrorCode(CoreErrors::USER_NOT_FOUND);
                 
                 return $OXOResponse;
@@ -177,7 +177,7 @@ class UsersController extends BaseController{
             $user->region = $request->get('region');
             $plainPassword = $request->input('password');
             $user->password = app('hash')->make($plainPassword);
-            $user->usertype = "external";
+            $user->usertype = $request->input('usertype');
 
             $profilepic = [];
             $iddoc = [];
@@ -204,7 +204,6 @@ class UsersController extends BaseController{
                 $user->passport = $passport;
             endif;
             
-            //dd($user);
             if($user->save()):
                 Mail::to($user->email)->send(new VerificationEmail($user));
 
@@ -296,11 +295,11 @@ class UsersController extends BaseController{
         }
     }
 
-    public function forgotPassword(Request $request){
+    public function resetPassword(Request $request){
 
         $user = User::where(['email' => $request->email])->firstOr(function () {
             $OXOResponse = new \Oxoresponse\OXOResponse("Could not update user password");
-            $OXOResponse->addErrorToList("make sure you have passed correct user ID");
+            $OXOResponse->addErrorToList("make sure you have passed correct email");
             $OXOResponse->setErrorCode(CoreErrors::UPDATE_OPERATION_FAILED);
 
             return $OXOResponse;
@@ -313,6 +312,37 @@ class UsersController extends BaseController{
         }
         else
         {
+            
+            Mail::to($request->email)->send(new VerificationEmail($user));
+
+            $OXOResponse = new \Oxoresponse\OXOResponse("Kindly check your email to reset your password");
+            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+            $OXOResponse->setObject($user);
+
+            return $OXOResponse->jsonSerialize();
+
+        }
+
+    }
+
+    public function forgotPassword(Request $request){
+
+        $user = User::where(['email' => $request->email])->firstOr(function () {
+            $OXOResponse = new \Oxoresponse\OXOResponse("Could not update user password");
+            $OXOResponse->addErrorToList("make sure you have passed correct email");
+            $OXOResponse->setErrorCode(CoreErrors::UPDATE_OPERATION_FAILED);
+
+            return $OXOResponse;
+        }
+        );
+
+        if($user instanceof OXOResponse)
+        {
+            return $user->jsonSerialize();
+        }
+        else
+        {
+            //send email to get link to return to user forgot password
             $plainPassword = $request->input('password');
             $user->password = app('hash')->make($plainPassword);
             $user->save();
