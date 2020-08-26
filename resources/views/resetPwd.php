@@ -10,7 +10,7 @@
 				ImpoExpo
 			</td>
 			<td class="pull-right" style="float: right;color: #fff;padding: 20px;font-size: 14px;font-weight: 600;">
-				Email Verification
+				Reset Password
 			</td>
 		</tr>
 	</table> 
@@ -22,12 +22,12 @@
 			<td style="margin: 40px;">Welcome to ImpoExpo <?php echo "$user->name"; ?></td>&nbsp;
 		</tr>
 		<tr>
-			<td><p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p></td>
+			<td><p>Kindly click the button below to reset your password.</p></td>
 		</tr>
 		<tr>
 			<td>
 				<button style="background:#5d3ee3;border: none;height:50px;width:150px;">
-					<a style="color:#fff; font-weight: 600; text-decoration: none;" href="http://localhost/api/v1/users/verifyEmail/<?php echo $user->userID ;?>">VERIFY MAIL</a>
+					<a style="color:#fff; font-weight: 600; text-decoration: none;" href="http://localhost/?useridentity=<?php echo $user->userID; ?> ">RESET PASSWORD</a>
 				</button>
 			</td>
 		</tr>

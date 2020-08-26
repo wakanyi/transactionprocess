@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use App\Exceptions\CoreErrors;
+use App\Mail\ResetPassword;
 use App\OXOResponse;
 use Illuminate\Support\Facades\Auth;
 use Aws\Exception\MultipartUploadException;
@@ -310,8 +311,7 @@ class UsersController extends BaseController{
     public function resetPassword(Request $request){
 
         $user = User::where(['email' => $request->email])->firstOr(function () {
-            $OXOResponse = new \Oxoresponse\OXOResponse("Could not update user password");
-            $OXOResponse->addErrorToList("make sure you have passed correct email");
+            $OXOResponse = new \Oxoresponse\OXOResponse("Email does not exist kindly check and try again.");
             $OXOResponse->setErrorCode(CoreErrors::UPDATE_OPERATION_FAILED);
 
             return $OXOResponse;
@@ -325,7 +325,7 @@ class UsersController extends BaseController{
         else
         {
             
-            Mail::to($request->email)->send(new VerificationEmail($user));
+            Mail::to($request->email)->send(new ResetPassword($user));
 
             $OXOResponse = new \Oxoresponse\OXOResponse("Kindly check your email to reset your password");
             $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
@@ -339,9 +339,8 @@ class UsersController extends BaseController{
 
     public function forgotPassword(Request $request){
 
-        $user = User::where(['email' => $request->email])->firstOr(function () {
-            $OXOResponse = new \Oxoresponse\OXOResponse("Could not update user password");
-            $OXOResponse->addErrorToList("make sure you have passed correct email");
+        $user = User::where(['userID' => $request->userID])->firstOr(function () {
+            $OXOResponse = new \Oxoresponse\OXOResponse("User Does not exist. Kindly check again and try again later.");
             $OXOResponse->setErrorCode(CoreErrors::UPDATE_OPERATION_FAILED);
 
             return $OXOResponse;
@@ -354,7 +353,6 @@ class UsersController extends BaseController{
         }
         else
         {
-            //send email to get link to return to user forgot password
             $plainPassword = $request->input('password');
             $user->password = app('hash')->make($plainPassword);
             $user->save();
@@ -424,7 +422,7 @@ class UsersController extends BaseController{
     }
 
 public function verifyAdmin(Request $request, $userID){
-$user = User::where(['userID' => $userID])->first();
+    $user = User::where(['userID' => $userID])->first();
 
 
         if(!$user)
@@ -460,6 +458,25 @@ $user = User::where(['userID' => $userID])->first();
                 
             }
         }        
+    }
+
+    public function getUserType(Request $request, $usertype){
+        if($usertype == 'internal'):
+            
+            $individualUser = User::where('usertype', 'like', '%internal%')->get();
+                $OXOResponse = new \Oxoresponse\OXOResponse("List of All Internal Users");
+                $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+                $OXOResponse->setObject($individualUser);
+
+                return $OXOResponse->jsonSerialize();
+        else:
+            $externalUser = User::where('usertype', 'not like', '%internal%')->get();;
+            $OXOResponse = new \Oxoresponse\OXOResponse("List of All External Users");
+            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+            $OXOResponse->setObject($externalUser);
+
+            return $OXOResponse->jsonSerialize();
+        endif;
     }
     
 }

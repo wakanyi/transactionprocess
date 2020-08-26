@@ -38,4 +38,5 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->post('user/verifyAdmin/{userID}', 'UsersController@verifyAdmin');
     $router->get('user/me', 'UsersController@me');
     $router->get('user/fetchEmail/{user_email}', 'UsersController@fetchEmail');
+    $router->get('user/userType/{usertype}', 'UsersController@getUserType');
 });
