@@ -177,7 +177,7 @@ class UsersController extends BaseController{
             $user->region = $request->get('region');
             $plainPassword = $request->input('password');
             $user->password = app('hash')->make($plainPassword);
-            $user->usertype = "external";
+            $user->usertype = $request->get('usertype');
 
             $profilepic = [];
             $iddoc = [];
