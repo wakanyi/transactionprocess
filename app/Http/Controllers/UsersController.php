@@ -114,23 +114,31 @@ class UsersController extends BaseController{
 
         // Find the user by email
         $profile = User::where('email', $request->input('email'))->first();
+        
         if ($profile != null):
-            if (Hash::check($request->input('password'), $profile->password)) {
-                $credentials = $request->only('email', 'password');
-                if ($token = Auth::attempt($credentials)) {
-                    $object = $this->respondWithToken($token);
-                    $OXOResponse = new \Oxoresponse\OXOResponse("Login Successfully");
-                    $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
-                    $OXOResponse->setObject($object);
-                    return $OXOResponse->jsonSerialize();
-                }
-            } else {
-                $OXOResponse = new \Oxoresponse\OXOResponse("Failed to login in.");
+            if ($profile->email_verify === false):
+                $OXOResponse = new \Oxoresponse\OXOResponse("Kindly check your email and verify your account");
                 $OXOResponse->setErrorCode(CoreErrors::USER_NOT_FOUND);
-                $OXOResponse->addErrorToList("Kindly check your credentials and try again");
+                
                 return $OXOResponse;
+            else:
+                if (Hash::check($request->input('password'), $profile->password)) {
+                    $credentials = $request->only('email', 'password');
+                    if ($token = Auth::attempt($credentials)) {
+                        $object = $this->respondWithToken($token);
+                        $OXOResponse = new \Oxoresponse\OXOResponse("Login Successfully");
+                        $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+                        $OXOResponse->setObject($object);
+                        return $OXOResponse->jsonSerialize();
+                    }
+                } else {
+                    $OXOResponse = new \Oxoresponse\OXOResponse("Failed to login in.");
+                    $OXOResponse->setErrorCode(CoreErrors::USER_NOT_FOUND);
+                    $OXOResponse->addErrorToList("Kindly check your credentials and try again");
+                    return $OXOResponse;
 
-            }
+                }
+            endif;
         else:
                 $OXOResponse = new \Oxoresponse\OXOResponse("Kindly check your email ");
                 //$OXOResponse->addErrorToList("Email does not exist");
@@ -153,6 +161,8 @@ class UsersController extends BaseController{
             $OXOResponse = new \Oxoresponse\OXOResponse("User Exists. Kindly use another email or contact Adminstrator to get your logins");
             $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
             $OXOResponse->setObject($profilerec);
+
+            return $OXOResponse;
 
         }else{
             $this->validate(
