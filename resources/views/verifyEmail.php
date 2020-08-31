@@ -27,7 +27,7 @@
 		<tr>
 			<td>
 				<button style="background:#5d3ee3;border: none;height:50px;width:150px;">
-					<a style="color:#fff; font-weight: 600; text-decoration: none;" href="http://localhost/api/v1/users/verifyEmail/<?php echo $user->userID ;?>">VERIFY MAIL</a>
+					<a style="color:#fff; font-weight: 600; text-decoration: none;" href="http://134.209.248.217/api/v1/users/verifyEmail/<?php echo $user->userID ;?>">VERIFY MAIL</a>
 				</button>
 			</td>
 		</tr>
