@@ -34,8 +34,8 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->get('user/index', 'UsersController@index');
     $router->post('user/login', 'UsersController@login');
     $router->post('user/create', 'UsersController@create');
-    $router->post('user/verifyEmail/{userID}', 'UsersController@verifyEmail');
-    $router->post('user/verifyAdmin/{userID}', 'UsersController@verifyAdmin');
+    $router->get('user/verifyEmail/{userID}', 'UsersController@verifyEmail');
+    $router->get('user/verifyAdmin/{userID}', 'UsersController@verifyAdmin');
     $router->get('user/me', 'UsersController@me');
     $router->get('user/fetchEmail/{user_email}', 'UsersController@fetchEmail');
     $router->get('user/userType/{usertype}', 'UsersController@getUserType');
