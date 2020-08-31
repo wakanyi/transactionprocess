@@ -337,9 +337,9 @@ class UsersController extends BaseController{
 
     }
 
-    public function forgotPassword(Request $request){
+    public function forgotPassword(Request $request, $userID){
 
-        $user = User::where(['userID' => $request->userID])->firstOr(function () {
+        $user = User::where(['userID' => $userID])->firstOr(function () {
             $OXOResponse = new \Oxoresponse\OXOResponse("User Does not exist. Kindly check again and try again later.");
             $OXOResponse->setErrorCode(CoreErrors::UPDATE_OPERATION_FAILED);
 

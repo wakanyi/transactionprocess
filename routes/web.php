@@ -39,4 +39,6 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->get('user/me', 'UsersController@me');
     $router->get('user/fetchEmail/{user_email}', 'UsersController@fetchEmail');
     $router->get('user/userType/{usertype}', 'UsersController@getUserType');
+    $router->post('user/resetPassword', 'UsersController@resetPassword');
+    $router->get('user/forgotPassword/{userID}', 'UsersController@forgotPassword');
 });
