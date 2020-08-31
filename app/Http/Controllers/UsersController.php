@@ -220,7 +220,7 @@ class UsersController extends BaseController{
             if($user->save()):
                 Mail::to($user->email)->send(new VerificationEmail($user));
 
-                $OXOResponse = new \Oxoresponse\OXOResponse("User created successfully");
+                $OXOResponse = new \Oxoresponse\OXOResponse("User created successfully. Kindly check your email to verify account.");
                 $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
                 $OXOResponse->setObject($user);
                 return $OXOResponse->jsonSerialize();
