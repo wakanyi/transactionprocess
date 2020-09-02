@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use App\Exceptions\CoreErrors;
 use App\Mail\ResetPassword;
-use App\OXOResponse;
+use Oxoresponse\OXOResponse;
 use Illuminate\Support\Facades\Auth;
 use Aws\Exception\MultipartUploadException;
 use Illuminate\Support\Facades\Hash;
@@ -311,9 +311,9 @@ class UsersController extends BaseController{
     public function resetPassword(Request $request){
 
         $user = User::where(['email' => $request->email])->firstOr(function () {
+            
             $OXOResponse = new \Oxoresponse\OXOResponse("Email does not exist kindly check and try again.");
-            $OXOResponse->setErrorCode(CoreErrors::UPDATE_OPERATION_FAILED);
-
+            $OXOResponse->setErrorCode(CoreErrors::RECORD_NOT_FOUND);
             return $OXOResponse;
         }
         );
@@ -324,7 +324,6 @@ class UsersController extends BaseController{
         }
         else
         {
-            
             Mail::to($request->email)->send(new ResetPassword($user));
 
             $OXOResponse = new \Oxoresponse\OXOResponse("Kindly check your email to reset your password");
