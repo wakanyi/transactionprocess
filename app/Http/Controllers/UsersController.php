@@ -190,7 +190,48 @@ class UsersController extends BaseController{
             $user->password = app('hash')->make($plainPassword);
             $user->usertype = $request->input('usertype');
 
+            if($user->save()):
+                Mail::to($user->email)->send(new VerificationEmail($user));
+
+                $OXOResponse = new \Oxoresponse\OXOResponse("User created successfully. Kindly check your email to verify account.");
+                $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+                $OXOResponse->setObject($user);
+                return $OXOResponse->jsonSerialize();
+            else:
+                $OXOResponse = new \Oxoresponse\OXOResponse("Failed to create user. Kindly try again later");
+                $OXOResponse->setErrorCode(CoreErrors::FAILED_TO_CREATE_RECORD);
+                $OXOResponse->setObject($user);
+                return $OXOResponse->jsonSerialize();
+            endif;
+        }
+    }
+
+
+    public function update(Request $request, $userID){
+
+        $user = User::where(['userID' => $userID])->firstOr(function () {
             
+            $OXOResponse = new \Oxoresponse\OXOResponse("User Does not exist. Kindly consult the administrator.");
+            $OXOResponse->setErrorCode(CoreErrors::RECORD_NOT_FOUND);
+            return $OXOResponse;
+        }
+        );
+
+        if($user instanceof OXOResponse)
+        {
+            return $user->jsonSerialize();
+        }
+        else
+        {
+            $user->name = $request->get('name');
+            $user->email = $request->get('email');
+            $user->phone_number = $request->get('phone_number');
+            $user->address = $request->get('address');
+            $user->country = $request->get('country');
+            $user->region = $request->get('region');
+            $plainPassword = $request->input('password');
+            $user->password = app('hash')->make($plainPassword);
+            $user->usertype = $request->input('usertype');
 
             $profilepic = [];
             $iddoc = [];
@@ -216,20 +257,15 @@ class UsersController extends BaseController{
                 $passport = $this->uploaddoc($request,'passport');
                 $user->passport = $passport;
             endif;
-            
-            if($user->save()):
-                Mail::to($user->email)->send(new VerificationEmail($user));
+           
+            $user->save();
 
-                $OXOResponse = new \Oxoresponse\OXOResponse("User created successfully. Kindly check your email to verify account.");
-                $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
-                $OXOResponse->setObject($user);
-                return $OXOResponse->jsonSerialize();
-            else:
-                $OXOResponse = new \Oxoresponse\OXOResponse("Failed to create user. Kindly try again later");
-                $OXOResponse->setErrorCode(CoreErrors::FAILED_TO_CREATE_RECORD);
-                $OXOResponse->setObject($user);
-                return $OXOResponse->jsonSerialize();
-            endif;
+            $OXOResponse = new \Oxoresponse\OXOResponse("Account Updated successfully.");
+            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+            $OXOResponse->setObject($user);
+
+            return $OXOResponse->jsonSerialize();
+
         }
     }
 
@@ -476,6 +512,31 @@ public function verifyAdmin(Request $request, $userID){
 
             return $OXOResponse->jsonSerialize();
         endif;
+    }
+
+    public function getSpecificUser(Request $request, $userID){
+        $user = User::where(['userID' => $userID])->first();
+
+
+        if(!$user)
+        {
+            $OXOResponse = new \Oxoresponse\OXOResponse("User Does Not Exist. Kindly sign up");
+            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+            $OXOResponse->setObject($user);
+
+            return $OXOResponse->jsonSerialize();
+        }
+        else{
+            
+                $OXOResponse = new \Oxoresponse\OXOResponse("User Exists");
+                $OXOResponse->setErrorCode(8000);
+                $OXOResponse->setObject($user);
+
+                return $OXOResponse->jsonSerialize();
+        }
+
+                
+          
     }
     
 }
