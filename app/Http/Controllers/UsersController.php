@@ -188,7 +188,6 @@ class UsersController extends BaseController{
             $user->region = $request->get('region');
             $plainPassword = $request->input('password');
             $user->password = app('hash')->make($plainPassword);
-            $user->usertype = $request->input('usertype');
 
             if($user->save()):
                 Mail::to($user->email)->send(new VerificationEmail($user));
@@ -232,6 +231,7 @@ class UsersController extends BaseController{
             $plainPassword = $request->input('password');
             $user->password = app('hash')->make($plainPassword);
             $user->usertype = $request->input('usertype');
+            $user->tin_number = $request->input('tin_number');
 
             $profilepic = [];
             $iddoc = [];
