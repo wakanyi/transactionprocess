@@ -25,6 +25,10 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->post('roles/create', 'RolesController@create');
     $router->post('roles/update/{roleID}', 'RolesController@update');
 
+    //Role/Category Routes
+    $router->get('kins/index', 'KinsController@index');
+    $router->post('kins/create/{userID}', 'KinsController@create');
+
     //Permission Routes
     $router->get('permission/index', 'Permissions@index');
     $router->post('permission/create', 'Permissions@create');
