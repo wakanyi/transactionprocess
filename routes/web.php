@@ -46,5 +46,4 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->get('user/userType/{usertype}', 'UsersController@getUserType');
     $router->post('user/resetPassword', 'UsersController@resetPassword');
     $router->post('user/forgotPassword/{userID}', 'UsersController@forgotPassword');
-    $router->get('user/getUser_userID/{userID}', 'UsersController@user_by_userid');
 });

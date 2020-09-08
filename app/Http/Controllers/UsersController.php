@@ -539,36 +539,4 @@ public function verifyAdmin(Request $request, $userID){
           
     }
 
-    /**
-     * CustomerPayment by User ID.
-     *
-     * @param string $request     get the sent data
-     * @param string $user_ID the user ID for user
-     * 
-     * @return void
-     */
-    public function user_by_userid(Request $request, $user_ID)
-    {
-	$userData = User::where('userID', $user_ID)->first();
-
-        if ($userData != null) :
-
-
-            $OXOResponse = new \Oxoresponse\OXOResponse("User Exists");
-            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
-            $OXOResponse->setObject($userData);
-
-            return $OXOResponse->jsonSerialize();
-        else:
-
-            $OXOResponse = new \Oxoresponse\OXOResponse("User Does Not exist");
-            $OXOResponse->addErrorToList("Please check with the administrator and try again");
-            $OXOResponse->setErrorCode(CoreErrors::RECORD_NOT_FOUND);
-           // $OXOResponse->errorMsg();
-            
-            return $OXOResponse;
-        endif;
-
-    }
-    
 }
