@@ -6,7 +6,7 @@ use App\Kin;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use App\Exceptions\CoreErrors;
-use App\OXOResponse;
+use Oxoresponse\OXOResponse;
 
 class KinsController extends BaseController{
 
@@ -22,60 +22,100 @@ class KinsController extends BaseController{
     }
 
     public function create(Request $request, $userID){
-
-        $userKin = Kin::where(['userID' => $userID])->first();
-
-        if($userKin):
-            dd("update");
-        else:
-            dd("create new kin");
-        endif;
-
-        $this->validate(
-            $request, [
-                'name' => 'required|string',
-                'email' => 'required|string',
-                'phone_number' => 'required|string',
-                'gender' => 'required|string',
-                'address' => 'required|string',
-                'country' => 'required|string',
-            ]
+        $kin = Kin::where('userID', '=', $userID)->firstOr(function () {
+            
+            $OXOResponse = new \Oxoresponse\OXOResponse("User Kin Does not exist. Kindly consult the administrator.");
+            $OXOResponse->setErrorCode(CoreErrors::RECORD_NOT_FOUND);
+            return $OXOResponse;
+        }
         );
+        if($kin instanceof OXOResponse)
+        {
+            
 
-        $kin = new Kin();
-        $kin->userID = $userID;
-        $kin->name = $request->get('name');
-        $kin->email = $request->get('email');
-        $kin->phone_number = $request->get('phone_number');
-        $kin->gender = $request->get('gender');
-        $kin->address = $request->get('address');
-        $kin->country = $request->get('country');
-
-        $identitycard = [];
-        $passportdoc = [];
-
-        if($request->has('identitycard')):
-            $identitycard = $this->uploaddoc($request,'identitycard');
-            $kin->identitycard = $identitycard;
-        endif;
-
-        if($request->has('identitycard')):
-            $passportdoc = $this->uploaddoc($request,'identitycard');
-            $kin->passportdoc = $passportdoc;
-        endif;
-
-        if($kin->save()):
-            $OXOResponse = new \Oxoresponse\OXOResponse("Next of Kin created successfully");
-            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
-            $OXOResponse->setObject($kin);
-            return $OXOResponse->jsonSerialize();
-        else:
-            $OXOResponse = new \Oxoresponse\OXOResponse("Failed to create Next of Kin. Kindly try again later");
-            $OXOResponse->setErrorCode(CoreErrors::FAILED_TO_CREATE_RECORD);
-            $OXOResponse->setObject($kin);
-            return $OXOResponse->jsonSerialize();
-        endif;
-
+            $this->validate(
+                $request, [
+                    'name' => 'required|string',
+                    'email' => 'required|string',
+                    'phone_number' => 'required|string',
+                    'gender' => 'required|string',
+                    'address' => 'required|string',
+                    'country' => 'required|string',
+                    'region' => 'required|string',
+                ]
+            );
+    
+            $kin = new Kin();
+            $kin->userID = $userID;
+            $kin->name = $request->get('name');
+            $kin->email = $request->get('email');
+            $kin->phone_number = $request->get('phone_number');
+            $kin->gender = $request->get('gender');
+            $kin->address = $request->get('address');
+            $kin->country = $request->get('country');
+            $kin->region = $request->get('region');
+    
+            $identitycard = [];
+            $passportdoc = [];
+    
+            if($request->has('identitycard')):
+                $identitycard = $this->uploaddoc($request,'identitycard');
+                $kin->identitycard = $identitycard;
+            endif;
+    
+            if($request->has('identitycard')):
+                $passportdoc = $this->uploaddoc($request,'identitycard');
+                $kin->passportdoc = $passportdoc;
+            endif;
+    
+            if($kin->save()):
+                $OXOResponse = new \Oxoresponse\OXOResponse("Next of Kin created successfully");
+                $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+                $OXOResponse->setObject($kin);
+                return $OXOResponse->jsonSerialize();
+            else:
+                $OXOResponse = new \Oxoresponse\OXOResponse("Failed to create Next of Kin. Kindly try again later");
+                $OXOResponse->setErrorCode(CoreErrors::FAILED_TO_CREATE_RECORD);
+                $OXOResponse->setObject($kin);
+                return $OXOResponse->jsonSerialize();
+            endif;
+        }
+        else
+        {
+            
+            $kin->name = $request->input('name');
+            $kin->email = $request->input('email');
+            $kin->phone_number = $request->input('phone_number');
+            $kin->gender = $request->input('gender');
+            $kin->address = $request->input('address');
+            $kin->country = $request->input('country');
+            $kin->region = $request->input('region');
+    
+            $identitycard = [];
+            $passportdoc = [];
+    
+            if($request->has('identitycard')):
+                $identitycard = $this->uploaddoc($request,'identitycard');
+                $kin->identitycard = $identitycard;
+            endif;
+    
+            if($request->has('identitycard')):
+                $passportdoc = $this->uploaddoc($request,'identitycard');
+                $kin->passportdoc = $passportdoc;
+            endif;
+    
+            if($kin->save()):
+                $OXOResponse = new \Oxoresponse\OXOResponse("Next of Kin created successfully");
+                $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+                $OXOResponse->setObject($kin);
+                return $OXOResponse->jsonSerialize();
+            else:
+                $OXOResponse = new \Oxoresponse\OXOResponse("Failed to create Next of Kin. Kindly try again later");
+                $OXOResponse->setErrorCode(CoreErrors::FAILED_TO_CREATE_RECORD);
+                $OXOResponse->setObject($kin);
+                return $OXOResponse->jsonSerialize();
+            endif;
+        }
     }
 
     public function uploaddoc(Request $request,$fieldName)

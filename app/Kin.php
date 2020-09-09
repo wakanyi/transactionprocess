@@ -20,4 +20,9 @@ class Kin extends Model implements AuthenticatableContract, AuthorizableContract
     protected $fillable = [
        'userID','name', 'email','phone_number','gender','address','country','region','identitycard','passportdoc',
     ];
+
+    protected $table = "kins";
+
+
+    
 }

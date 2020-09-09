@@ -175,6 +175,7 @@ class UsersController extends BaseController{
                     'country' => 'required|string',
                     'region' => 'required|string',
                     'password' => 'required|string',
+                    'usertype' => 'required|string',
                 ]
             );
 
@@ -188,6 +189,7 @@ class UsersController extends BaseController{
             $user->region = $request->get('region');
             $plainPassword = $request->input('password');
             $user->password = app('hash')->make($plainPassword);
+            $user->usertype = $request->get('usertype');
 
             if($user->save()):
                 Mail::to($user->email)->send(new VerificationEmail($user));
