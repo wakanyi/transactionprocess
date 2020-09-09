@@ -23,6 +23,10 @@ class Kin extends Model implements AuthenticatableContract, AuthorizableContract
 
     protected $table = "kins";
 
+    protected $casts = [
+        'identitycard' => 'array',
+        'passport' => 'array'
+      ];
 
-    
+
 }
