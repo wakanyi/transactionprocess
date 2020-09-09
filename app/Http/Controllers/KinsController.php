@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use App\Exceptions\CoreErrors;
 use Oxoresponse\OXOResponse;
+use Aws\S3\MultipartUploader;
+use Aws\S3\S3Client;
+use Illuminate\Support\Facades\Auth;
+use Aws\Exception\MultipartUploadException;
+use Illuminate\Support\Facades\Hash;
 
 class KinsController extends BaseController{
 
