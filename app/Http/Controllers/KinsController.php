@@ -23,6 +23,14 @@ class KinsController extends BaseController{
 
     public function create(Request $request, $userID){
 
+        $userKin = Kin::where(['userID' => $userID])->first();
+
+        if($userKin):
+            dd("update");
+        else:
+            dd("create new kin");
+        endif;
+
         $this->validate(
             $request, [
                 'name' => 'required|string',
@@ -141,6 +149,28 @@ class KinsController extends BaseController{
             $OXOResponse->setErrorCode(CoreErrors::UPDATE_OPERATION_FAILED);
 
             return $OXOResponse;
+        }
+    }
+
+    public function getKin(Request $request, $userID){
+        $userKin = Kin::where(['userID' => $userID])->first();
+
+
+        if(!$userKin)
+        {
+            $OXOResponse = new \Oxoresponse\OXOResponse("Kin Does Not Exist. Kindly sign up");
+            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+            $OXOResponse->setObject($userKin);
+
+            return $OXOResponse->jsonSerialize();
+        }
+        else{
+            
+                $OXOResponse = new \Oxoresponse\OXOResponse("Kin Exists");
+                $OXOResponse->setErrorCode(8000);
+                $OXOResponse->setObject($userKin);
+
+                return $OXOResponse->jsonSerialize();
         }
     }
 

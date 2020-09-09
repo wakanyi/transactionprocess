@@ -25,9 +25,10 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->post('roles/create', 'RolesController@create');
     $router->post('roles/update/{roleID}', 'RolesController@update');
 
-    //Role/Category Routes
+    //Kin Routes
     $router->get('kins/index', 'KinsController@index');
     $router->post('kins/create/{userID}', 'KinsController@create');
+    $router->get('kins/getKin/{userID}', 'KinsController@getKin');
 
     //Permission Routes
     $router->get('permission/index', 'Permissions@index');
@@ -38,6 +39,7 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->get('user/index', 'UsersController@index');
     $router->post('user/login', 'UsersController@login');
     $router->post('user/create', 'UsersController@create');
+    $router->post('user/update/{userID}', 'UsersController@update');
     $router->get('user/getSpecificUser/{userID}', 'UsersController@getSpecificUser');
     $router->get('user/verifyEmail/{userID}', 'UsersController@verifyEmail');
     $router->get('user/verifyAdmin/{userID}', 'UsersController@verifyAdmin');
