@@ -20,7 +20,7 @@ class Role extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'role', 'publish',
+        'roleID', 'role', 'publish', 'slug',
     ];
 
     public function permissions(){

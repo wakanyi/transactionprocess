@@ -158,12 +158,53 @@ class UsersController extends BaseController{
         $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
         if($profilerec){
+            if($profilerec->email_verify === false ){
+                $this->validate(
+                    $request, [
+                        'name' => 'required|string',
+                        'email' => 'required|string',
+                        'phone_number' => 'required|string',
+                        'address' => 'required|string',
+                        'country' => 'required|string',
+                        'region' => 'required|string',
+                        'password' => 'required|string',
+                        'usertype' => 'required|string',
+                    ]
+                );
+    
+                $user = new User();
+                $user->userID = $this->generate_controlno($permitted_chars, 5);
+                $user->name = $request->get('name');
+                $user->email = $request->get('email');
+                $user->phone_number = $request->get('phone_number');
+                $user->address = $request->get('address');
+                $user->country = $request->get('country');
+                $user->region = $request->get('region');
+                $plainPassword = $request->input('password');
+                $user->password = app('hash')->make($plainPassword);
+                $user->usertype = $request->get('usertype');
+    
+                if($user->save()):
+                    Mail::to($user->email)->send(new VerificationEmail($user));
+    
+                    $OXOResponse = new \Oxoresponse\OXOResponse("User created successfully. Kindly check your email to verify account.");
+                    $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+                    $OXOResponse->setObject($user);
+                    return $OXOResponse->jsonSerialize();
+                else:
+                    $OXOResponse = new \Oxoresponse\OXOResponse("Failed to create user. Kindly try again later");
+                    $OXOResponse->setErrorCode(CoreErrors::FAILED_TO_CREATE_RECORD);
+                    $OXOResponse->setObject($user);
+                    return $OXOResponse->jsonSerialize();
+                endif;
+            }else{
+                $OXOResponse = new \Oxoresponse\OXOResponse("User Exists. Kindly use another email or contact Adminstrator to get your logins");
+                $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+                $OXOResponse->setObject($profilerec);
 
-            $OXOResponse = new \Oxoresponse\OXOResponse("User Exists. Kindly use another email or contact Adminstrator to get your logins");
-            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
-            $OXOResponse->setObject($profilerec);
+                return $OXOResponse;
+            }
 
-            return $OXOResponse;
 
         }else{
             $this->validate(
@@ -239,6 +280,7 @@ class UsersController extends BaseController{
             $iddoc = [];
             $tincert = [];
             $passport = [];
+            $company_stamp = [];
 
             if($request->has('profile_picture')):
                 $profilepic = $this->uploaddoc($request,'profile_picture');
@@ -258,6 +300,11 @@ class UsersController extends BaseController{
             if($request->has('passport')):
                 $passport = $this->uploaddoc($request,'passport');
                 $user->passport = $passport;
+            endif;
+
+            if($request->has('company_stamp')):
+                $company_stamp = $this->uploaddoc($request,'company_stamp');
+                $user->company_stamp = $company_stamp;
             endif;
            
             $user->save();

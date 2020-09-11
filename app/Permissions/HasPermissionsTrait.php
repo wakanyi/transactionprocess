@@ -49,7 +49,7 @@
     public function hasRole( ... $roles ) {
 
         foreach ($roles as $role) {
-        if ($this->roles->contains('role', $role)) {
+        if ($this->roles->contains('slug', $role)) {
             return true;
         }
         }
@@ -68,12 +68,12 @@
     }
     protected function hasPermission($permission) {
 
-        return (bool) $this->permissions->where('permission', $permission->permission)->count();
+        return (bool) $this->permissions->where('slug', $permission->permission)->count();
     }
 
     protected function getAllPermissions(array $permissions) {
 
-        return Permission::whereIn('permission',$permissions)->get();
+        return Permission::whereIn('slug',$permissions)->get();
         
     }
 

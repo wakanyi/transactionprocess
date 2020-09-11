@@ -18,11 +18,11 @@ class Permission extends Model implements AuthenticatableContract, AuthorizableC
      * @var array
      */
     protected $fillable = [
-        'permID', 'permission', 'publish',
+        'permID', 'permission', 'publish', 'slug',
     ];
 
     public function roles(){
-        return $this->belongsToMany(Role::class, 'roles_permissions');
+        return $this->belongsToMany(Role::class, 'role_permissions');
     }
 
     public function users(){

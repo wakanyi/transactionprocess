@@ -34,6 +34,7 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->get('permission/index', 'Permissions@index');
     $router->post('permission/create', 'Permissions@create');
     $router->post('permission/update/{permID}', 'Permissions@update');
+    $router->get('permission/roles', 'PermissionsController@roles');
 
     //User Routes
     $router->get('user/index', 'UsersController@index');

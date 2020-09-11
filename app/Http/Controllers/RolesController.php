@@ -42,6 +42,7 @@ class RolesController extends BaseController{
             $request, [
                 'role' => 'required|string',
                 'publish' => 'required|string',
+                'slug' => 'required|string',
             ]
         );
 
@@ -49,6 +50,7 @@ class RolesController extends BaseController{
         $role->roleID = $this->generate_controlno($permitted_chars, 5);
         $role->role = $request->get('role');
         $role->publish = $request->get('publish');
+        $role->slug = $request->get('slug');
         $role->save();
 
         $OXOResponse = new \Oxoresponse\OXOResponse("Role created successfully");
@@ -77,6 +79,7 @@ class RolesController extends BaseController{
         {
             $role->role = $request->get('role');
             $role->publish = $request->get('publish');
+            $role->slug = $request->get('slug');
             $role->save();
 
             $OXOResponse = new \Oxoresponse\OXOResponse("Role Updated Successfully");

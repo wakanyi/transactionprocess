@@ -20,7 +20,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'userID', 'name', 'email', 'phone_number', 'address', 'country', 'region', 'password', 'usertype', 'profile_picture', 'id_document', 'tin_certificate', 'passport', 'email_verify', 'admin_verify', 'tin_number'
+        'userID', 'name', 'email', 'phone_number', 'address', 'country', 'region', 'password', 'usertype', 'profile_picture', 'id_document', 'tin_certificate', 'passport', 'email_verify', 'admin_verify', 'tin_number', 'company_stamp',
     ];
 
     /**
@@ -36,7 +36,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'profile_picture' => 'array',
         'id_document' => 'array',
         'tin_certificate' => 'array',
-        'passport' => 'array'
+        'passport' => 'array',
+        'company_stamp' => 'array'
       ];
 
     /**
