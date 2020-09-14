@@ -92,7 +92,7 @@ class PermissionsController extends BaseController{
         }
     }
 
-    public function roles()
+    /* public function roles()
     {   
         $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -169,7 +169,7 @@ class PermissionsController extends BaseController{
 
 		
 		return redirect()->back();
-    }
+    } */
 
 
 }
