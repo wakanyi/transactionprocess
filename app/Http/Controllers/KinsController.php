@@ -68,8 +68,8 @@ class KinsController extends BaseController{
                 $kin->identitycard = $identitycard;
             endif;
     
-            if($request->has('identitycard')):
-                $passportdoc = $this->uploaddoc($request,'identitycard');
+            if($request->has('passportdoc')):
+                $passportdoc = $this->uploaddoc($request,'passportdoc');
                 $kin->passportdoc = $passportdoc;
             endif;
     
