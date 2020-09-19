@@ -124,8 +124,9 @@ class UsersController extends BaseController{
                 
                 return $OXOResponse;
             else:
-		if (Hash::check($request->input('password'), $profile->password)) {
+		if (Hash::check($request->get('password'), $profile->password)) {
                     $credentials = $request->only('email', 'password');
+                    //dd($credentials);
                     if ($token = Auth::attempt($credentials)) {
                         $object = $this->respondWithToken($token);
                         $OXOResponse = new \Oxoresponse\OXOResponse("Login Successfully");
