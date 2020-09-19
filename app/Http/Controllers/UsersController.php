@@ -116,14 +116,15 @@ class UsersController extends BaseController{
         // Find the user by email
         $profile = User::where('email', $request->input('email'))->first();
         
-        if ($profile != null):
+        if ($profile):
+
             if ($profile->email_verify === false):
                 $OXOResponse = new \Oxoresponse\OXOResponse("Kindly check your email and verify your account");
                 $OXOResponse->setErrorCode(CoreErrors::USER_NOT_FOUND);
                 
                 return $OXOResponse;
             else:
-                if (Hash::check($request->input('password'), $profile->password)) {
+		if (Hash::check($request->input('password'), $profile->password)) {
                     $credentials = $request->only('email', 'password');
                     if ($token = Auth::attempt($credentials)) {
                         $object = $this->respondWithToken($token);
