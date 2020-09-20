@@ -124,6 +124,8 @@ class UsersController extends BaseController{
                 
                 return $OXOResponse;
             else:
+                $cpass = Hash::make($request->get('password'));
+                //dd($cpass);
 		if (Hash::check($request->get('password'), $profile->password)) {
                     $credentials = $request->only('email', 'password');
                     //dd($credentials);
@@ -533,15 +535,11 @@ public function verifyAdmin(Request $request, $userID){
                 $user->admin_verify = true;
 
                 if($user->save()){
-                $OXOResponse = new \Oxoresponse\OXOResponse("Verification Successful. Kindly login to proceed");
-                $OXOResponse->setErrorCode(8000);
-                $OXOResponse->setObject($user);
-            $msg = "true"; 
-        
-            return redirect('http://localhost:8080/#/?msg='.$msg);
-        }
-
-                
+                    $OXOResponse = new \Oxoresponse\OXOResponse("Verification Successful. Kindly login to proceed");
+                    $OXOResponse->setErrorCode(8000);
+                    $OXOResponse->setObject($user);
+                    return $OXOResponse->jsonSerialize();
+                }
             }
         }        
     }
