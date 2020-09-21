@@ -273,20 +273,20 @@ class UsersController extends BaseController{
             $user->address = $request->get('address');
             $user->country = $request->get('country');
             $user->region = $request->get('region');
-            $plainPassword = $request->input('password');
-            $user->password = app('hash')->make($plainPassword);
+            // $plainPassword = $request->input('password');
+            // $user->password = app('hash')->make($plainPassword);
             $user->usertype = $request->input('usertype');
             $user->tin_number = $request->input('tin_number');
 
-            $profilepic = [];
+            $profile_picture = [];
             $iddoc = [];
             $tincert = [];
             $passport = [];
             $company_stamp = [];
 
             if($request->has('profile_picture')):
-                $profilepic = $this->uploaddoc($request,'profile_picture');
-                $user->profile_picture = $profilepic;
+                $profile_picture = $this->uploaddoc($request,'profile_picture');
+                $user->profile_picture = $profile_picture;
             endif;
 
             if($request->has('id_document')):
@@ -327,8 +327,7 @@ class UsersController extends BaseController{
         if($request->hasFile($fieldName))
         {
             $obJson = [];
-            foreach ($request->file($fieldName) as $image)
-            {
+            foreach ($request->file($fieldName) as $image):
                 // Get filename with extension
                 $filenameWithExtension = $image->getClientOriginalName();
                 // Get just filename
@@ -383,7 +382,7 @@ class UsersController extends BaseController{
                         echo esc_html($exp)->getMessage();
                     }
                 } while (!isset($result));
-            }
+            endforeach;
             return $obJson;
         } else
         {
@@ -394,7 +393,6 @@ class UsersController extends BaseController{
             return $OXOResponse;
         }
     }
-
     public function resetPassword(Request $request){
 
         $user = User::where(['email' => $request->email])->firstOr(function () {
