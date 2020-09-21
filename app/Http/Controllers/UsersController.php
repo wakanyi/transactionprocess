@@ -124,23 +124,21 @@ class UsersController extends BaseController{
                 
                 return $OXOResponse;
             else:
-                $cpass = Hash::make($request->get('password'));
-                //dd($cpass);
-		if (Hash::check($request->get('password'), $profile->password)) {
-                    $credentials = $request->only('email', 'password');
-                    //dd($credentials);
-                    if ($token = Auth::attempt($credentials)) {
-                        $object = $this->respondWithToken($token);
-                        $OXOResponse = new \Oxoresponse\OXOResponse("Login Successfully");
-                        $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
-                        $OXOResponse->setObject($object);
-                        return $OXOResponse->jsonSerialize();
-                    }
+                
+                if (Hash::check($request->get('password'), $profile->password)) {
+                        $credentials = $request->only('email', 'password');
+                        if ($token = Auth::attempt($credentials)) {
+                            $object = $this->respondWithToken($token);
+                            $OXOResponse = new \Oxoresponse\OXOResponse("Login Successfully");
+                            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+                            $OXOResponse->setObject($object);
+                            return $OXOResponse->jsonSerialize();
+                        }
                 } else {
-                    $OXOResponse = new \Oxoresponse\OXOResponse("Failed to login in.");
-                    $OXOResponse->setErrorCode(CoreErrors::USER_NOT_FOUND);
-                    $OXOResponse->addErrorToList("Kindly check your credentials and try again");
-                    return $OXOResponse;
+                        $OXOResponse = new \Oxoresponse\OXOResponse("Failed to login in.");
+                        $OXOResponse->setErrorCode(CoreErrors::USER_NOT_FOUND);
+                        $OXOResponse->addErrorToList("Kindly check your credentials and try again");
+                        return $OXOResponse;
 
                 }
             endif;
