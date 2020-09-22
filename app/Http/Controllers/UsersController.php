@@ -488,7 +488,7 @@ class UsersController extends BaseController{
                     $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
                     $OXOResponse->setObject($user);
 
-                    return $OXOResponse->jsonSerialize();
+                    return redirect('http://134.208.248.217');
                 }
             else
             {
