@@ -38,7 +38,7 @@
 		</tr>
 		<tr>
 			<td>
-				Contact Us on <a href="mailto:hello@oxoafrica.co.tz">hello@impoexpo.co.tz</a>
+				Contact Us on <a href="mailto:hello@impoexpo.co.tz">hello@impoexpo.co.tz</a>
 			</td>
 		</tr>
 		<tr>
