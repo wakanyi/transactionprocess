@@ -27,7 +27,7 @@
 		<tr>
 			<td>
 				<button style="background:#5d3ee3;border: none;height:50px;width:150px;">
-					<a style="color:#fff; font-weight: 600; text-decoration: none;" href="http://192.168.1.68:8080/verify/password?userID=<?php echo $user->userID; ?> ">RESET PASSWORD</a>
+					<a style="color:#fff; font-weight: 600; text-decoration: none;" href="http://134.209.248.217/#/verify/password/<?php echo $user->userID;?> ">RESET PASSWORD</a>
 				</button>
 			</td>
 		</tr>

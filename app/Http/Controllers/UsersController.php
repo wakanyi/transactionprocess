@@ -498,8 +498,8 @@ class UsersController extends BaseController{
                 $OXOResponse->setErrorCode(8000);
                 $OXOResponse->setObject($user);
             //$msg = "true"; 
-            return $OXOResponse->jsonSerialize();
-            //return redirect('http://localhost/?msg='.$msg);
+            //return $OXOResponse->jsonSerialize();
+            return redirect('http://134.208.248.217');
         }
             }
         }        
