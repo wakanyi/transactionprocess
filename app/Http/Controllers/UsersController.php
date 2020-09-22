@@ -488,7 +488,7 @@ class UsersController extends BaseController{
                     $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
                     $OXOResponse->setObject($user);
 
-                    return redirect('http://134.208.248.217');
+                    return redirect('http://134.209.248.217/#/login');
                 }
             else
             {
@@ -499,7 +499,7 @@ class UsersController extends BaseController{
                 $OXOResponse->setObject($user);
             //$msg = "true"; 
             //return $OXOResponse->jsonSerialize();
-            return redirect('http://134.208.248.217');
+            return redirect('http://134.209.248.217/#/login');
         }
             }
         }        
