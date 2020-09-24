@@ -15,8 +15,8 @@ class CreateUsersPermissionsTable extends Migration
     {
         Schema::create('users_permissions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('userID');
-            $table->unsignedInteger('permissonID');
+            $table->unsignedBigInteger('userID');
+            $table->unsignedBigInteger('permissonID');
             $table->timestamps();
 
             $table->foreign('userID')

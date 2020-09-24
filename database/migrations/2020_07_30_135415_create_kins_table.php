@@ -15,7 +15,7 @@ class CreateKinsTable extends Migration
     {
         Schema::create('kins', function (Blueprint $table) {
             $table->id();
-            $table->integer('userID');
+            $table->unsignedBigInteger('userID');
             $table->string('name');
             $table->string('email');
             $table->string('phone_number');
