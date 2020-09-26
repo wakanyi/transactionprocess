@@ -584,4 +584,29 @@ public function verifyAdmin(Request $request, $userID){
           
     }
 
+    public function getSpecificUser_withID(Request $request, $userID){
+        $user = User::where(['id' => $userID])->first();
+
+
+        if(!$user)
+        {
+            $OXOResponse = new \Oxoresponse\OXOResponse("User Does Not Exist. Kindly sign up");
+            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+            $OXOResponse->setObject($user);
+
+            return $OXOResponse->jsonSerialize();
+        }
+        else{
+            
+                $OXOResponse = new \Oxoresponse\OXOResponse("User Exists");
+                $OXOResponse->setErrorCode(8000);
+                $OXOResponse->setObject($user);
+
+                return $OXOResponse->jsonSerialize();
+        }
+
+                
+          
+    }
+
 }

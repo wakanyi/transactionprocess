@@ -47,6 +47,7 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->post('user/create', 'UsersController@create');
     $router->post('user/update/{userID}', 'UsersController@update');
     $router->get('user/getSpecificUser/{userID}', 'UsersController@getSpecificUser');
+    $router->get('user/getSpecificUser_withID/{userID}', 'UsersController@getSpecificUser_withID');
     $router->get('user/verifyEmail/{userID}', 'UsersController@verifyEmail');
     $router->get('user/verifyAdmin/{userID}', 'UsersController@verifyAdmin');
     $router->get('user/me', 'UsersController@me');
