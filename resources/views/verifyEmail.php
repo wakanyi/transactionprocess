@@ -4,7 +4,7 @@
 
 <body>
 
-	<table class="container" style="width: 60%;margin-left:auto;margin-right:auto;height: 100px;position: relative;background: #5d3ee3;position: absolute;top: 50%;left: 50%;margin-right: -50%;transform: translate(-50%, -80%);">
+	<table class="container" style="width: 60%;margin-left:auto;margin-right:auto;height: 100px;position: relative;background: #286531;position: absolute;top: 50%;left: 50%;margin-right: -50%;transform: translate(-50%, -80%);">
 		<tr class="head">
 			<td class="pull-left" style="float: left;padding: 20px;font-size: 16px; color: #fff;font-weight: 600;">
 				ImpoExpo
@@ -26,7 +26,7 @@
 		</tr>
 		<tr>
 			<td>
-				<button style="background:#5d3ee3;border: none;height:50px;width:150px;">
+				<button style="background:#286531;border: none;height:50px;width:150px;">
 					<a style="color:#fff; font-weight: 600; text-decoration: none;" href="http://134.209.248.217:8022/api/v1/user/verifyEmail/<?php echo $user->userID ;?>">VERIFY MAIL</a>
 				</button>
 			</td>
