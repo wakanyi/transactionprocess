@@ -122,7 +122,7 @@ class NotificationController extends BaseController{
 
         if ($notification instanceof OXOResponse) {
 
-            return $user->jsonSerialize();
+            return $notification->jsonSerialize();
 
         } else {
 
