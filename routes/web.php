@@ -55,4 +55,15 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->get('user/userType/{usertype}', 'UsersController@getUserType');
     $router->post('user/resetPassword', 'UsersController@resetPassword');
     $router->post('user/forgotPassword/{userID}', 'UsersController@forgotPassword');
+
+    //Notification  Routes
+    $router->post('notifications', 'NotificationController@create');
+    $router->get('notifications/unread/{userID}','NotificationController@getUnreadNotifications');
+    $router->get('notifications/read/{userID}','NotificationController@getReadNotifications');
+    $router->get('notifications/all/{userID}','NotificationController@getAllNotifications');
+    $router->post('notifications/markread','NotificationController@markAsRead');
+
+
+   
+
 });
