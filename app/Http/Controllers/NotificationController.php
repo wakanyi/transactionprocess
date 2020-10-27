@@ -20,7 +20,7 @@ class NotificationController extends BaseController{
 
 	    $notification->userID = $request->userID;
         $notification->notification = $request->notification;
-
+        $notification->role = $request->role;
         $notification->save();
 
         $OXOResponse = new \Oxoresponse\OXOResponse("Operational successful");
@@ -140,4 +140,50 @@ class NotificationController extends BaseController{
         }
 
     }
+
+    public function getAllNotification_by_role($role)
+    {
+
+        $notification = Notification::where('role', $role)->get();
+         if ($notification != null) :
+
+           
+            $OXOResponse = new \Oxoresponse\OXOResponse("Notifications Exists");
+            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+            $OXOResponse->setObject($notification);
+
+            return $OXOResponse->jsonSerialize();
+        else:
+
+            $OXOResponse = new \Oxoresponse\OXOResponse("Notifications Does Not exist");
+            $OXOResponse->addErrorToList("Please check with the administrator and try again");
+            $OXOResponse->setErrorCode(CoreErrors::RECORD_NOT_FOUND);
+            
+            return $OXOResponse;
+        endif;
+    }
+
+
+    public function getAllUnreadNotifications_by_role($role)
+    {
+
+        $unread_notification = Notification::where(['role'=>$role, 'is_read'=>0])->get();
+         if ($unread_notification != null) :
+
+           
+            $OXOResponse = new \Oxoresponse\OXOResponse("Unread Notifications Exists");
+            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+            $OXOResponse->setObject($unread_notification);
+
+            return $OXOResponse->jsonSerialize();
+        else:
+
+            $OXOResponse = new \Oxoresponse\OXOResponse("Unread Notifications Does Not exist");
+            $OXOResponse->addErrorToList("Please check with the administrator and try again");
+            $OXOResponse->setErrorCode(CoreErrors::RECORD_NOT_FOUND);
+            
+            return $OXOResponse;
+        endif;
+    }
+   
 }

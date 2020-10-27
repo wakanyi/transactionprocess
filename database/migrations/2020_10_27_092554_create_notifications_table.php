@@ -20,11 +20,7 @@ class CreateNotificationsTable extends Migration
             $table->boolean('is_read')->default(0);
             $table->timestamps();
 
-<<<<<<< HEAD:database/migrations/2020_10_27_092554_create_notifications_table.php
-		$table->foreign('userID')
-=======
 	    $table->foreign('userID')
->>>>>>> 7652ab9101e9e93a4ef4cd4cfb9bf7f0005ecb95:database/migrations/2020_10_19_092111_create_notifications_table.php
 		  ->references('id')
 		  ->on('users')
                   ->onDelete('cascade');

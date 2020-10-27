@@ -62,8 +62,8 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->get('notifications/read/{userID}','NotificationController@getReadNotifications');
     $router->get('notifications/all/{userID}','NotificationController@getAllNotifications');
     $router->post('notifications/markread','NotificationController@markAsRead');
-
-
+    $router->get('notifications_byrole/{role}','NotificationController@getAllNotification_by_role');
+    $router->get('unreadnotifications/{role}','NotificationController@getAllUnreadNotifications_by_role');
    
 
 });
