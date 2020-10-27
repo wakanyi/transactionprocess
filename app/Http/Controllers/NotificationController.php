@@ -32,7 +32,7 @@ class NotificationController extends BaseController{
 
     public function getUnreadNotifications($userID){
 
-	$user = User::where('userID', $userID)->firstOr(function () {
+	$user = User::where('id', $userID)->firstOr(function () {
 
             $OXOResponse = new OXOResponse("Could not find user ");
             $OXOResponse->addErrorToList("make sure you have passed correct ID");
@@ -58,7 +58,7 @@ class NotificationController extends BaseController{
 
        public function getReadNotifications($userID){
 
-        $user = User::where('userID', $userID)->firstOr(function () {
+        $user = User::where('id', $userID)->firstOr(function () {
 
             $OXOResponse = new OXOResponse("Could not find user ");
             $OXOResponse->addErrorToList("make sure you have passed correct ID");
@@ -85,7 +85,7 @@ class NotificationController extends BaseController{
 
       public function getAllNotifications($userID){
 
-        $user = User::where('userID', $userID)->firstOr(function () {
+        $user = User::where('id', $userID)->firstOr(function () {
 
             $OXOResponse = new OXOResponse("Could not find user ");
             $OXOResponse->addErrorToList("make sure you have passed correct ID");
