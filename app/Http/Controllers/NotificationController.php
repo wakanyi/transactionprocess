@@ -141,10 +141,10 @@ class NotificationController extends BaseController{
 
     }
 
-    public function getAllNotification_by_role($role)
+    public function getAllNotification_by_role(Request $request)
     {
 
-        $notification = Notification::where('role', $role)->get();
+        $notification = Notification::where('role', $request->role)->get();
          if ($notification != null) :
 
            
@@ -164,10 +164,10 @@ class NotificationController extends BaseController{
     }
 
 
-    public function getAllUnreadNotifications_by_role($role)
+    public function getAllUnreadNotifications_by_role(Request $request)
     {
 
-        $unread_notification = Notification::where(['role'=>$role, 'is_read'=>0])->get();
+        $unread_notification = Notification::where(['role'=>$request->role, 'is_read'=>0])->get();
          if ($unread_notification != null) :
 
            
