@@ -18,7 +18,7 @@ class NotificationController extends BaseController{
 
         $notification = new Notification();
 
-	$notification->userID = $request->userID;
+	    $notification->userID = $request->userID;
         $notification->notification = $request->notification;
 
         $notification->save();
