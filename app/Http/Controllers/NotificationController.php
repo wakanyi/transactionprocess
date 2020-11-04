@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Notification;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use App\Exceptions\CoreErrors;
@@ -17,8 +18,10 @@ class NotificationController extends BaseController{
     public function create(Request $request){
 
         $notification = new Notification();
+	
+        if($request->has('userID'))
+	 $notification->userID = $request->userID;
 
-	    $notification->userID = $request->userID;
         $notification->notification = $request->notification;
         $notification->role = $request->role;
         $notification->save();
@@ -46,7 +49,8 @@ class NotificationController extends BaseController{
 
         } else {
 
-            $notifications = Notification::where(['userID'=>$userID,'is_read'=>0])->get();
+            $notifications = Notification::where(['userID'=>$userID,'is_read'=>0])->distinct()->get(['notification']);
+	    //$notifications = DB::table('notifications')->where(['userID'=>$userID,'is_read'=>0])->distinct()->get(['notification']);
 	
 	    $OXOResponse = new OXOResponse("user notifications");
             $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
@@ -72,7 +76,7 @@ class NotificationController extends BaseController{
 
         } else {
 
-            $notifications = Notification::where(['userID'=>$userID,'is_read'=>1])->get();
+            $notifications = Notification::where(['userID'=>$userID,'is_read'=>1])->distinct()->get(['notification']);
 
             $OXOResponse = new OXOResponse("user notifications");
             $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
@@ -99,7 +103,7 @@ class NotificationController extends BaseController{
 
         } else {
 
-            $notifications = Notification::where(['userID'=>$userID])->get();
+            $notifications = Notification::where(['userID'=>$userID])->distinct()->get(['notification']);
 
             $OXOResponse = new OXOResponse("user notifications");
             $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
@@ -144,7 +148,7 @@ class NotificationController extends BaseController{
     public function getAllNotification_by_role(Request $request)
     {
 
-        $notification = Notification::where('role', $request->role)->get();
+        $notification = Notification::where('role', $request->role)->distinct()->get(['notification']);
          if ($notification != null) :
 
            
@@ -167,7 +171,7 @@ class NotificationController extends BaseController{
     public function getAllUnreadNotifications_by_role(Request $request)
     {
 
-        $unread_notification = Notification::where(['role'=>$request->role, 'is_read'=>0])->get();
+        $unread_notification = Notification::where(['role'=>$request->role, 'is_read'=>0])->distinct()->get(['notification']);
          if ($unread_notification != null) :
 
            
