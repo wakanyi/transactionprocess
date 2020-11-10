@@ -15,6 +15,8 @@ use Aws\S3\MultipartUploader;
 use Aws\S3\S3Client;
 use App\Mail\VerificationEmail;
 use Illuminate\Support\Facades\Mail;
+use App\Utilities\Notification;
+use App\Utilities\ServiceUtilities;
 
 class UsersController extends BaseController{
 
@@ -192,6 +194,12 @@ class UsersController extends BaseController{
                     $OXOResponse = new \Oxoresponse\OXOResponse("User created successfully. Kindly check your email to verify account.");
                     $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
                     $OXOResponse->setObject($user);
+
+                    $topic = "impoexpo/newaccountcreated/IT Personnel";
+                    $message = "New user account with ID '".$user->userID."' has been created.";
+
+                    ServiceUtilities::sendNotification($topic, $message);
+
                     return $OXOResponse->jsonSerialize();
                 else:
                     $OXOResponse = new \Oxoresponse\OXOResponse("Failed to create user. Kindly try again later");
