@@ -195,10 +195,7 @@ class UsersController extends BaseController{
                     $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
                     $OXOResponse->setObject($user);
 
-                    $topic = "impoexpo/newaccountcreated/IT Personnel";
-                    $message = "New user account with ID '".$user->userID."' has been created.";
-
-                    ServiceUtilities::sendNotification($topic, $message);
+                    
 
                     return $OXOResponse->jsonSerialize();
                 else:
@@ -507,6 +504,11 @@ class UsersController extends BaseController{
                 $OXOResponse->setObject($user);
             //$msg = "true"; 
             //return $OXOResponse->jsonSerialize();
+                    $topic = "impoexpo/newaccountcreated/IT Personnel";
+                    $message = "New user account with ID '".$user->userID."' has been created.";
+
+                    ServiceUtilities::sendNotification($topic, $message);
+
             return redirect('http://134.209.248.217/#/login');
         }
             }
