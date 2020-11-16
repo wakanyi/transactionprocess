@@ -581,10 +581,15 @@ public function verifyAdmin(Request $request, $userID){
     public function getUserType(Request $request, $usertype){
         if($usertype == 'internal'):
             
-            $individualUser = User::where('usertype', 'like', '%internal%')->get();
-                $OXOResponse = new \Oxoresponse\OXOResponse("List of All Internal Users");
-                $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
-                $OXOResponse->setObject($individualUser);
+            $individualUser = DB::table('users_roles')
+                            ->join('users', 'users.id', '=' ,'users_roles.userID' )
+                            ->join('roles', 'roles.id', '=', 'users_roles.roleID')
+                            //->where('users.id', '=', $userID)
+                            ->select('users.*','users_roles.userID as userROLEID','roles.role as rolename')
+                            ->get();
+            $OXOResponse = new \Oxoresponse\OXOResponse("List of All Internal Users");
+            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+            $OXOResponse->setObject($individualUser);
 
                 return $OXOResponse->jsonSerialize();
         else:
