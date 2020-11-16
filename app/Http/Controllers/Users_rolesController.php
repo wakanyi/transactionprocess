@@ -87,14 +87,14 @@ class Users_rolesController extends BaseController{
     }
     
     
-    public function userInformation_userID(Request $request, $userID){
+    public function userInformation_userID(Request $request){
         $userdetails = DB::table('users_roles')
-                        ->join('users', 'users.id', '=' ,'users_roles.userID' )
-                        ->join('roles', 'roles.id', '=', 'users_roles.roleID')
-                        ->where('users_roles.userID', '=', $userID)
-                        ->select('users.*', 'roles.role as rolename')
+                       ->join('users', 'users.id', '=' ,'users_roles.userID' )
+                       ->join('roles', 'roles.id', '=', 'users_roles.roleID')
+                        //->where('users.id', '=', $userID)
+                        ->select('users.*','users_roles.userID as userROLEID','roles.role as rolename')
                         ->get();
-
+//dd($userdetails);
         if ($userdetails){
             $OXOResponse = new \Oxoresponse\OXOResponse("user details");
             $OXOResponse->addErrorToList("Please check with the administrator and try again");
