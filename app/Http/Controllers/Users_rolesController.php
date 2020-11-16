@@ -83,6 +83,30 @@ class Users_rolesController extends BaseController{
                 return $OXOResponse->jsonSerialize();
         }
 
-    }      
+    }
+    
+    
+    public function userInformation_userID(Request $request, $userID){
+        $tender = Users_role::join('users', 'users.id', '=' ,'users_roles.userID' )
+                        ->join('roles', 'roles.id', '=', 'users_roles.roleID')
+                        ->where('userID', '=', $userID)
+                        ->select('users.*', 'roles.role as rolename')
+                        ->get();
+
+        if ($tender){
+            $OXOResponse = new \Oxoresponse\OXOResponse("user details");
+            $OXOResponse->addErrorToList("Please check with the administrator and try again");
+            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+            $OXOResponse->setObject($tender);
+            
+            return $OXOResponse;
+        }else {
+            $OXOResponse = new \Oxoresponse\OXOResponse("User Does Not exist");
+            $OXOResponse->addErrorToList("Please check with the administrator and try again");
+            $OXOResponse->setErrorCode(CoreErrors::RECORD_NOT_FOUND);
+            
+            return $OXOResponse;
+        }
+
 
 }
