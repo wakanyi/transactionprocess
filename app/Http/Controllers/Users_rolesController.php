@@ -87,17 +87,17 @@ class Users_rolesController extends BaseController{
     
     
     public function userInformation_userID(Request $request, $userID){
-        $tender = Users_role::join('users', 'users.id', '=' ,'users_roles.userID' )
+        $userdetails = Users_role::join('users', 'users.id', '=' ,'users_roles.userID' )
                         ->join('roles', 'roles.id', '=', 'users_roles.roleID')
                         ->where('users_roles.userID', '=', $userID)
                         ->select('users.*', 'roles.role as rolename')
                         ->get();
 
-        if ($tender){
+        if ($userdetails){
             $OXOResponse = new \Oxoresponse\OXOResponse("user details");
             $OXOResponse->addErrorToList("Please check with the administrator and try again");
             $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
-            $OXOResponse->setObject($tender);
+            $OXOResponse->setObject($userdetails);
             
             return $OXOResponse;
         }else {
