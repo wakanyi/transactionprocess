@@ -29,6 +29,7 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->get('userRole/index', 'Users_rolesController@index');
     $router->post('userRole/addRole', 'Users_rolesController@addRole');
     $router->get('userRole/getUserRole/{userID}', 'Users_rolesController@getUserRole');
+    $router->get('userRole/userInformation_userID/{userID}', 'Users_rolesController@userInformation_userID');
 
     //Kin Routes
     $router->get('kins/index', 'KinsController@index');
