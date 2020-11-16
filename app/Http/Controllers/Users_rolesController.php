@@ -22,22 +22,43 @@ class Users_rolesController extends BaseController{
     }
 
     public function addRole(Request $request){
-        $userRole = new Users_role();
-        $userRole->userID = $request->get('userID');
-        $userRole->roleID = $request->get('roleID');
 
-        if($userRole->save()):
+        $userID = $request->get('userID'); //gets the user ID from the request
 
-            $OXOResponse = new \Oxoresponse\OXOResponse("User role created successfully. Kindly check your email to verify account.");
-            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
-            $OXOResponse->setObject($userRole);
-            return $OXOResponse->jsonSerialize();
-        else:
-            $OXOResponse = new \Oxoresponse\OXOResponse("Failed to create user role. Kindly try again later");
-            $OXOResponse->setErrorCode(CoreErrors::FAILED_TO_CREATE_RECORD);
-            $OXOResponse->setObject($userRole);
-            return $OXOResponse->jsonSerialize();
-        endif;
+        $user = Users_role::where(['userID' => $userID])->first();
+
+        if($user){
+            //update the records that have already been created
+
+            $user->roleID = $request->get('roleID');
+
+                if($user->save()){
+                    $OXOResponse = new \Oxoresponse\OXOResponse("User role updated successfully.");
+                    $OXOResponse->setErrorCode(8000);
+                    $OXOResponse->setObject($user);
+                    return $OXOResponse->jsonSerialize();
+                }
+
+        } else {
+            $userRole = new Users_role();
+            $userRole->userID = $request->get('userID');
+            $userRole->roleID = $request->get('roleID');
+
+            if($userRole->save()):
+
+                $OXOResponse = new \Oxoresponse\OXOResponse("User role created successfully. Kindly check your email to verify account.");
+                $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+                $OXOResponse->setObject($userRole);
+                return $OXOResponse->jsonSerialize();
+            else:
+                $OXOResponse = new \Oxoresponse\OXOResponse("Failed to create user role. Kindly try again later");
+                $OXOResponse->setErrorCode(CoreErrors::FAILED_TO_CREATE_RECORD);
+                $OXOResponse->setObject($userRole);
+                return $OXOResponse->jsonSerialize();
+            endif;
+        }
+
+            
 
     }
 
