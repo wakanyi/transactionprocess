@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use App\Exceptions\CoreErrors;
 use App\OXOResponse;
+use Illuminate\Support\Facades\DB;
 
 class Users_rolesController extends BaseController{
 
@@ -87,7 +88,8 @@ class Users_rolesController extends BaseController{
     
     
     public function userInformation_userID(Request $request, $userID){
-        $userdetails = Users_role::join('users', 'users.id', '=' ,'users_roles.userID' )
+        $userdetails = DB::table('users_roles')
+                        ->join('users', 'users.id', '=' ,'users_roles.userID' )
                         ->join('roles', 'roles.id', '=', 'users_roles.roleID')
                         ->where('users_roles.userID', '=', $userID)
                         ->select('users.*', 'roles.role as rolename')
