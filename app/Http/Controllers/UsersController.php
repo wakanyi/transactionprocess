@@ -17,9 +17,35 @@ use App\Mail\VerificationEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Utilities\Notification;
 use App\Utilities\ServiceUtilities;
+use Illuminate\Support\Facades\Http;
 
 class UsersController extends BaseController{
 
+    public function saveNotification($message,$customer_id,$tender_id,$role,$icons)
+    {
+        //$agentURL = "http://134.209.248.217:8022/";
+        //http://134.209.248.217:8022/api/v1/notifications/all/"+response.data.objects.original.id
+        //$request = Http::get($agentURL."api/v1/notifications/all/".$customer_id);
+        $request = Http::asForm()->post("http://134.209.248.217:8022/api/v1/notifications/",[
+            'notification'=>$message,
+            'userID'=>$customer_id,
+            'tender_id'=>$tender_id,
+            'role'=>$role,
+            'icons'=>$icons
+        ]);
+        $response = $request->json();
+        $notification = $response['objects'];
+        //dd($paymentterms);
+        if($notification) :
+            return $notification;
+        else:
+            $OXOResponse = new \Oxoresponse\OXOResponse("Payment terms Record not found");
+            $OXOResponse->setErrorCode(CoreErrors::RECORD_NOT_FOUND);
+            $OXOResponse->setObject($notification);
+            return $OXOResponse->jsonSerialize();
+        endif;
+        //return $paymentterms;
+    }
    
     public function index(){
 
@@ -195,7 +221,6 @@ class UsersController extends BaseController{
                     $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
                     $OXOResponse->setObject($user);
 
-                    
 
                     return $OXOResponse->jsonSerialize();
                 else:
@@ -245,6 +270,8 @@ class UsersController extends BaseController{
                 $OXOResponse = new \Oxoresponse\OXOResponse("User created successfully. Kindly check your email to verify account.");
                 $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
                 $OXOResponse->setObject($user);
+
+                
                 return $OXOResponse->jsonSerialize();
             else:
                 $OXOResponse = new \Oxoresponse\OXOResponse("Failed to create user. Kindly try again later");
@@ -502,12 +529,13 @@ class UsersController extends BaseController{
                 $OXOResponse = new \Oxoresponse\OXOResponse("Verification Successful. Kindly login to proceed");
                 $OXOResponse->setErrorCode(8000);
                 $OXOResponse->setObject($user);
-            //$msg = "true"; 
-            //return $OXOResponse->jsonSerialize();
-                    $topic = "impoexpo/newaccountcreated/IT Personnel";
-                    $message = "New user account with ID '".$user->userID."' has been created.";
 
-                    ServiceUtilities::sendNotification($topic, $message);
+                $topic = "impoexpo/newaccountcreated/IT Personnel";
+                $message = "New user account with ID '".$user->userID."' has been created.";
+
+                $this->saveNotification($message,$user->userID,null,'IT Personnel','account_circle');
+
+                ServiceUtilities::sendNotification($topic, $message);
 
             return redirect('http://134.209.248.217/#/login');
         }
