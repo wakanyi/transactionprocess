@@ -89,7 +89,7 @@ class Users_rolesController extends BaseController{
     public function userInformation_userID(Request $request, $userID){
         $tender = Users_role::join('users', 'users.id', '=' ,'users_roles.userID' )
                         ->join('roles', 'roles.id', '=', 'users_roles.roleID')
-                        ->where('userID', '=', $userID)
+                        ->where('users_roles.userID', '=', $userID)
                         ->select('users.*', 'roles.role as rolename')
                         ->get();
 
