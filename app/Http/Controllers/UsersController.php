@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Utilities\Notification;
 use App\Utilities\ServiceUtilities;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 class UsersController extends BaseController{
 
