@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\DB;
 
 class UsersController extends BaseController{
 
-    public function saveNotification($message,$customer_id,$tender_id,$role,$icons)
+    public function saveNotification($message,$customer_id,$tender_id,$role,$icons,$category)
     {
         //$agentURL = "http://134.209.248.217:8022/";
         //http://134.209.248.217:8022/api/v1/notifications/all/"+response.data.objects.original.id
@@ -32,7 +32,8 @@ class UsersController extends BaseController{
             'userID'=>$customer_id,
             'tender_id'=>$tender_id,
             'role'=>$role,
-            'icons'=>$icons
+            'icons'=>$icons,
+            'category'=>$category
         ]);
         $response = $request->json();
         $notification = $response['objects'];
@@ -534,7 +535,7 @@ class UsersController extends BaseController{
                 $topic = "impoexpo/newaccountcreated/IT Personnel";
                 $message = "New user account with ID '".$user->userID."' has been created.";
 
-                $this->saveNotification($message,$user->userID,null,'IT Personnel','account_circle');
+                $this->saveNotification($message,$user->userID,null,'IT Personnel','account_circle','new_user');
 
                 ServiceUtilities::sendNotification($topic, $message);
 
