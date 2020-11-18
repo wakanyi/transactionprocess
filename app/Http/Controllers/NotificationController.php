@@ -20,7 +20,7 @@ class NotificationController extends BaseController{
         $notification = new Notification();
 	
         if($request->has('userID'))
-	 $notification->userID = $request->userID;
+	    $notification->userID = $request->userID;
 
         if($request->has('tenderID'))
          $notification->tenderID = $request->tenderID;
@@ -31,6 +31,7 @@ class NotificationController extends BaseController{
         $notification->notification = $request->notification;
         $notification->icons = $request->icons;
         $notification->role = $request->role;
+        $notification->category = $request->category;
         $notification->save();
 
         $OXOResponse = new \Oxoresponse\OXOResponse("Operational successful");
