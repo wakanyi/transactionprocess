@@ -111,7 +111,8 @@ class NotificationController extends BaseController{
 
         } else {
 
-            $notifications = Notification::where(['userID'=>$userID])->orderBy('id', 'desc')->get();
+            //$notifications = Notification::where(['userID'=>$userID])->orderBy('id', 'desc')->get();
+            $notifications = Notification::where(['userID'=>$userID])->get();
 
             $OXOResponse = new OXOResponse("user notifications");
             $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
@@ -156,7 +157,8 @@ class NotificationController extends BaseController{
     public function getAllNotification_by_role(Request $request)
     {
 
-        $notification = Notification::where('role', $request->role)->orderBy('id', 'desc')->get();
+        //$notification = Notification::where('role', $request->role)->orderBy('id', 'desc')->get();
+        $notification = Notification::where('role', $request->role)->get();
          if ($notification != null) :
 
            
