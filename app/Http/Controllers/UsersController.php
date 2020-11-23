@@ -583,12 +583,13 @@ public function verifyAdmin(Request $request, $userID){
     public function getUserType(Request $request, $usertype){
         if($usertype == 'internal'):
             
-            $individualUser = DB::table('users_roles')
-                            ->join('users', 'users.id', '=' ,'users_roles.userID' )
-                            ->join('roles', 'roles.id', '=', 'users_roles.roleID')
-                            //->where('users.id', '=', $userID)
+            $individualUser = DB::table('users')
+		            ->leftJoin('users_roles', 'users_roles.userID', '=', 'users.id')
+                            ->leftJoin('roles', 'roles.id', '=' ,'users_roles.roleID' )
+                            ->where('users.usertype', '=', 'internal')
                             ->select('users.*','users_roles.userID as userROLEID','roles.role as rolename')
                             ->get();
+	//dd(count($individualUser));
             $OXOResponse = new \Oxoresponse\OXOResponse("List of All Internal Users");
             $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
             $OXOResponse->setObject($individualUser);
