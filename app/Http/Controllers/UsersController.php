@@ -587,6 +587,7 @@ public function verifyAdmin(Request $request, $userID){
 		            ->leftJoin('users_roles', 'users_roles.userID', '=', 'users.id')
                             ->leftJoin('roles', 'roles.id', '=' ,'users_roles.roleID' )
                             ->where('users.usertype', '=', 'internal')
+                            ->where('users.email_verify', '=', 1)
                             ->select('users.*','users_roles.userID as userROLEID','roles.role as rolename')
                             ->get();
 	//dd(count($individualUser));
@@ -596,7 +597,9 @@ public function verifyAdmin(Request $request, $userID){
 
                 return $OXOResponse->jsonSerialize();
         else:
-            $externalUser = User::where('usertype', 'not like', '%internal%')->get();;
+            $externalUser = User::where('usertype', 'not like', '%internal%')
+                                    ->where('users.email_verify', '=', 1)
+                                    ->get();;
             $OXOResponse = new \Oxoresponse\OXOResponse("List of All External Users");
             $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
             $OXOResponse->setObject($externalUser);
