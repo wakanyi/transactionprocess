@@ -56,6 +56,7 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->get('user/userType/{usertype}', 'UsersController@getUserType');
     $router->post('user/resetPassword', 'UsersController@resetPassword');
     $router->post('user/forgotPassword/{userID}', 'UsersController@forgotPassword');
+    $router->post('user/discard/{userID}', 'UsersController@discard_user');
 
     //Notification  Routes
     $router->post('notifications', 'NotificationController@create');

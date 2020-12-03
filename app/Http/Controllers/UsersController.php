@@ -657,6 +657,51 @@ public function verifyAdmin(Request $request, $userID){
                 
           
     }
+	
+	public function discard_user(Request $request, $userID){
+                $user = User::where(['userID' => $userID])->first();
 
+                if(!$user)
+                {
+                    $OXOResponse = new \Oxoresponse\OXOResponse("User Does Not Exist.");
+                    $OXOResponse->setErrorCode(CoreErrors::RECORD_NOT_FOUND);
+                    $OXOResponse->setObject($user);
+        
+                    return $OXOResponse->jsonSerialize();
+                }
+                else{
+                    if($user->discard)
+                        {
+
+                           
+                            $OXOResponse = new \Oxoresponse\OXOResponse("The request to discard user has already been sent");
+                            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+                            $OXOResponse->setObject($user);
+        
+                            return $OXOResponse->jsonSerialize();
+				
+                        }
+                    else
+                    {
+                        $user->discard = true;
+                        $user->discard_comment = $request->discard_comment;
+        
+                        if($user->save()){
+                            $OXOResponse = new \Oxoresponse\OXOResponse("The request to discard user has been sent successfully.");
+                            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+                            $OXOResponse->setObject($user);
+
+                            $topic = "impoexpo/account_discarded/".$user->id."/Client";
+                            $message = "Your registration has been denied.";
+
+                            $this->saveNotification($message,$user->id,null,'Client','error_outline','incomplete');
+
+                            ServiceUtilities::sendNotification($topic, $message);
+
+                            return $OXOResponse->jsonSerialize();
+                        }
+                    }
+                } 
+            }
     
 }
