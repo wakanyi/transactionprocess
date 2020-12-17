@@ -539,7 +539,7 @@ class UsersController extends BaseController{
 
                 ServiceUtilities::sendNotification($topic, $message);
 
-            return redirect('http://134.209.248.217/#/login');
+            return redirect('http://imex-impoexpologistics.com:8021/login');
         }
             }
         }        
