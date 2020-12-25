@@ -217,7 +217,7 @@ class UsersController extends BaseController{
                 $user->usertype = $request->get('usertype');
     
                 if($user->save()):
-                    Mail::to($user->email)->send(new VerificationEmail($user));
+                   // Mail::to($user->email)->send(new VerificationEmail($user));
     
                     $OXOResponse = new \Oxoresponse\OXOResponse("User created successfully. Kindly check your email to verify account.");
                     $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
@@ -267,7 +267,7 @@ class UsersController extends BaseController{
             $user->usertype = $request->get('usertype');
 
             if($user->save()):
-                Mail::to($user->email)->send(new VerificationEmail($user));
+                //Mail::to($user->email)->send(new VerificationEmail($user));
 
                 $OXOResponse = new \Oxoresponse\OXOResponse("User created successfully. Kindly check your email to verify account.");
                 $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
@@ -443,7 +443,7 @@ class UsersController extends BaseController{
         }
         else
         {
-            Mail::to($request->email)->send(new ResetPassword($user));
+           // Mail::to($request->email)->send(new ResetPassword($user));
 
             $OXOResponse = new \Oxoresponse\OXOResponse("Kindly check your email to reset your password");
             $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
