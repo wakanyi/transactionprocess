@@ -22,19 +22,21 @@ use Illuminate\Support\Facades\DB;
 
 class UsersController extends BaseController{
 
-    public function saveNotification($message,$customer_id,$tender_id,$role,$icons,$category)
+    public function saveNotification($message,$user_id,$customer_id,$tender_id,$role,$icons,$category)
     {
         //$agentURL = "http://134.209.248.217:8022/";
         //http://134.209.248.217:8022/api/v1/notifications/all/"+response.data.objects.original.id
         //$request = Http::get($agentURL."api/v1/notifications/all/".$customer_id);
         $request = Http::asForm()->post("http://134.209.248.217:8022/api/v1/notifications/",[
             'notification'=>$message,
+            'user_id'=>$user_id,
             'userID'=>$customer_id,
             'tender_id'=>$tender_id,
             'role'=>$role,
             'icons'=>$icons,
             'category'=>$category
         ]);
+       
         $response = $request->json();
         $notification = $response['objects'];
         //dd($paymentterms);
@@ -535,7 +537,7 @@ class UsersController extends BaseController{
                 $topic = "impoexpo/newaccountcreated/IT Personnel";
                 $message = "New user account with ID '".$user->userID."' has been created.";
 
-                $this->saveNotification($message,$user->userID,null,'IT Personnel','account_circle','new_user');
+		$this->saveNotification($message,$user->user_id,null,null,'IT Personnel','account_circle','new_user');
 
                 ServiceUtilities::sendNotification($topic, $message);
 
@@ -694,7 +696,7 @@ public function verifyAdmin(Request $request, $userID){
                             $topic = "impoexpo/account_discarded/".$user->id."/Client";
                             $message = "Your registration has been denied.";
 
-                            $this->saveNotification($message,$user->id,null,'Client','error_outline','incomplete');
+                            $this->saveNotification($message,null,$user->id,null,'Client','error_outline','incomplete');
 
                             ServiceUtilities::sendNotification($topic, $message);
 

@@ -21,7 +21,8 @@ class NotificationController extends BaseController{
 	
         if($request->has('userID'))
 	    $notification->userID = $request->userID;
-
+        if($request->has('user_id'))
+            $notification->user_id = $request->user_id;
         if($request->has('tenderID'))
          $notification->tenderID = $request->tenderID;
 
