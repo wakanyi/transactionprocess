@@ -535,7 +535,7 @@ class UsersController extends BaseController{
                 $topic = "impoexpo/newaccountcreated/IT Personnel";
                 $message = "New user account with ID '".$user->userID."' has been created.";
 
-                $this->saveNotification($message,null,null,'IT Personnel','account_circle','new_user');
+                $this->saveNotification($message,$user->userID,null,'IT Personnel','account_circle','new_user');
 
                 ServiceUtilities::sendNotification($topic, $message);
 
