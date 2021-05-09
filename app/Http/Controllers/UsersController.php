@@ -19,8 +19,32 @@ use App\Utilities\Notification;
 use App\Utilities\ServiceUtilities;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+//use JWTAuth;
 
 class UsersController extends BaseController{
+
+    public function authenticateToken(Request $request){
+
+        //$token= str_replace('Bearer ', "" , $request->header('Authorization'));
+
+        $token = $request->token;
+
+        try { 
+            // \Tymon\JWTAuth\JWTAuth::setToken($token); //<-- set token and check
+            auth()->setToken($token);
+            if (! $claim = auth()->getPayload()) {
+                return response()->json(array('message'=>'user_not_found'), 404);
+            }
+        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+            return response()->json(array('message'=>'token_expired','code'=>'401'), 401);
+        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+            return response()->json(array('message'=>'token_invalid','code'=>'401'), 401);
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+            return response()->json(array('message'=>'token_absent','code'=>'401'), 401);
+        }
+
+        return response()->json(array('message'=>'OK','code'=>'200'),200);
+    }
 
     public function saveNotification($message,$user_id,$customer_id,$tender_id,$role,$icons,$category)
     {

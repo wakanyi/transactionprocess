@@ -16,10 +16,14 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'api/v1'], function ($router) {
-    $router->post('user/login', 'UsersController@login');  
+    $router->post('user/login', 'UsersController@login');
+    $router->post('user/create', 'UsersController@create');
+    $router->post('user/authenticate-token', 'UsersController@authenticateToken');
 });
-//$router->group(['prefix' => 'api/v1', 'middleware' => 'auth'], function ($router) {
-    $router->group(['prefix' => 'api/v1'], function ($router) {
+
+
+$router->group(['prefix' => 'api/v1', 'middleware' => 'auth'], function ($router) {
+    //$router->group(['prefix' => 'api/v1'], function ($router) {
     //Role/Category Routes
     $router->get('roles/index', 'RolesController@index');
     $router->post('roles/create', 'RolesController@create');
@@ -44,8 +48,6 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
 
     //User Routes
     $router->get('user/index', 'UsersController@index');
-    $router->post('user/login', 'UsersController@login');
-    $router->post('user/create', 'UsersController@create');
     $router->post('user/update/{userID}', 'UsersController@update');
     $router->get('user/getSpecificUser/{userID}', 'UsersController@getSpecificUser');
     $router->get('user/getSpecificUser_withID/{userID}', 'UsersController@getSpecificUser_withID');
@@ -67,5 +69,7 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->post('notifications/notifications_byrole','NotificationController@getAllNotification_by_role');
     $router->post('notifications/unreadnotifications','NotificationController@getAllUnreadNotifications_by_role');
    
+
+//});
 
 });
