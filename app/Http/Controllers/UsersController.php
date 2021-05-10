@@ -46,12 +46,12 @@ class UsersController extends BaseController{
         return response()->json(array('message'=>'OK','code'=>'200'),200);
     }
 
-    public function saveNotification($message,$user_id,$customer_id,$tender_id,$role,$icons,$category)
+    public function saveNotification($message,$user_id,$customer_id,$tender_id,$role,$icons,$category,$token)
     {
         //$agentURL = "http://134.209.248.217:8022/";
         //http://134.209.248.217:8022/api/v1/notifications/all/"+response.data.objects.original.id
         //$request = Http::get($agentURL."api/v1/notifications/all/".$customer_id);
-        $request = Http::asForm()->post("http://134.209.248.217:8022/api/v1/notifications/",[
+        $request = Http::withToken($token)->asForm()->post("http://134.209.248.217:8022/api/v1/notifications/",[
             'notification'=>$message,
             'user_id'=>$user_id,
             'userID'=>$customer_id,
@@ -532,6 +532,8 @@ class UsersController extends BaseController{
 
     public function verifyEmail(Request $request, $userID){
         $user = User::where(['userID' => $userID])->first();
+
+        $token= str_replace('Bearer ', "" , $request->header('Authorization'));
         
         if(!$user)
         {
@@ -561,7 +563,7 @@ class UsersController extends BaseController{
                 $topic = "impoexpo/newaccountcreated/IT Personnel";
                 $message = "New user account with ID '".$user->userID."' has been created.";
 
-		$this->saveNotification($message,$user->userID,null,null,'IT Personnel','account_circle','new_user');
+		$this->saveNotification($message,$user->userID,null,null,'IT Personnel','account_circle','new_user',$token);
 
                 ServiceUtilities::sendNotification($topic, $message);
 
@@ -687,6 +689,8 @@ public function verifyAdmin(Request $request, $userID){
 	public function discard_user(Request $request, $userID){
                 $user = User::where(['userID' => $userID])->first();
 
+                $token= str_replace('Bearer ', "" , $request->header('Authorization'));
+
                 if(!$user)
                 {
                     $OXOResponse = new \Oxoresponse\OXOResponse("User Does Not Exist.");
@@ -720,7 +724,7 @@ public function verifyAdmin(Request $request, $userID){
                             $topic = "impoexpo/account_discarded/".$user->id."/Client";
                             $message = "Your registration has been denied.";
 
-                            $this->saveNotification($message,null,$user->id,null,'Client','error_outline','incomplete');
+                            $this->saveNotification($message,null,$user->id,null,'Client','error_outline','incomplete',$token);
 
                             ServiceUtilities::sendNotification($topic, $message);
 
