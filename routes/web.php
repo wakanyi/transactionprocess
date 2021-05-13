@@ -19,6 +19,8 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->post('user/login', 'UsersController@login');
     $router->post('user/create', 'UsersController@create');
     $router->post('user/authenticate-token', 'UsersController@authenticateToken');
+    $router->post('user/resetPassword', 'UsersController@resetPassword');
+    $router->post('user/forgotPassword/{userID}', 'UsersController@forgotPassword');
 });
 
 
@@ -56,8 +58,6 @@ $router->group(['prefix' => 'api/v1', 'middleware' => 'auth'], function ($router
     $router->get('user/me', 'UsersController@me');
     $router->get('user/fetchEmail/{user_email}', 'UsersController@fetchEmail');
     $router->get('user/userType/{usertype}', 'UsersController@getUserType');
-    $router->post('user/resetPassword', 'UsersController@resetPassword');
-    $router->post('user/forgotPassword/{userID}', 'UsersController@forgotPassword');
     $router->post('user/discard/{userID}', 'UsersController@discard_user');
 
     //Notification  Routes
