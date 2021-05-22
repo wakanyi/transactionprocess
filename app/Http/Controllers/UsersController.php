@@ -46,12 +46,12 @@ class UsersController extends BaseController{
         return response()->json(array('message'=>'OK','code'=>'200'),200);
     }
 
-    public function saveNotification($message,$user_id,$customer_id,$tender_id,$role,$icons,$category,$token)
+   public function saveNotification($message,$user_id,$customer_id,$tender_id,$role,$icons,$category)
     {
         //$agentURL = "http://134.209.248.217:8022/";
         //http://134.209.248.217:8022/api/v1/notifications/all/"+response.data.objects.original.id
         //$request = Http::get($agentURL."api/v1/notifications/all/".$customer_id);
-        $request = Http::withToken($token)->asForm()->post("http://134.209.248.217:8022/api/v1/notifications/",[
+        $request = Http::asForm()->post("http://134.209.248.217:8022/api/v1/notifications/",[
             'notification'=>$message,
             'user_id'=>$user_id,
             'userID'=>$customer_id,
@@ -74,6 +74,36 @@ class UsersController extends BaseController{
         endif;
         //return $paymentterms;
     }
+
+    /*public function saveNotification($message,$user_id,$customer_id,$tender_id,$role,$icons,$category)
+    {
+       
+        $notification = new \App\Notification();
+
+        $notification->user_id = $user_id;
+        $notification->userID = $userID;
+        $notification->tender_id = $tender_id;
+        $notification->icons = $icons;
+        $notification->role = $role;
+        $notification->category = $category;
+        $notification->notification = $message;
+
+        if($notification->save()){
+
+            $OXOResponse = new \Oxoresponse\OXOResponse("Operational successful");
+            $OXOResponse->setErrorCode(CoreErrors::OPERATION_SUCCESSFUL);
+            $OXOResponse->setObject($notification);
+            return $OXOResponse->jsonSerialize();
+
+        }else {
+            $OXOResponse = new \Oxoresponse\OXOResponse("Failed to save notification");
+            $OXOResponse->setErrorCode(CoreErrors::FAILED_TO_CREATE_RECORD);
+            $OXOResponse->setObject($notification);
+            return $OXOResponse->jsonSerialize();
+        }
+
+
+    }*/
    
     public function index(){
 
@@ -533,7 +563,7 @@ class UsersController extends BaseController{
     public function verifyEmail(Request $request, $userID){
         $user = User::where(['userID' => $userID])->first();
 
-        $token= str_replace('Bearer ', "" , $request->header('Authorization'));
+        //$token= str_replace('Bearer ', "" , $request->header('Authorization'));
         
         if(!$user)
         {
@@ -563,7 +593,7 @@ class UsersController extends BaseController{
                 $topic = "impoexpo/newaccountcreated/IT Personnel";
                 $message = "New user account with ID '".$user->userID."' has been created.";
 
-		$this->saveNotification($message,$user->userID,null,null,'IT Personnel','account_circle','new_user',$token);
+		        $this->saveNotification($message,$user->userID,null,null,'IT Personnel','account_circle','new_user');
 
                 ServiceUtilities::sendNotification($topic, $message);
 
@@ -724,7 +754,7 @@ public function verifyAdmin(Request $request, $userID){
                             $topic = "impoexpo/account_discarded/".$user->id."/Client";
                             $message = "Your registration has been denied.";
 
-                            $this->saveNotification($message,null,$user->id,null,'Client','error_outline','incomplete',$token);
+                            $this->saveNotification($message,null,$user->id,null,'Client','error_outline','incomplete');
 
                             ServiceUtilities::sendNotification($topic, $message);
 

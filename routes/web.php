@@ -22,6 +22,7 @@ $router->group(['prefix' => 'api/v1'], function ($router) {
     $router->post('user/resetPassword', 'UsersController@resetPassword');
     $router->post('user/forgotPassword/{userID}', 'UsersController@forgotPassword');
     $router->get('user/verifyEmail/{userID}', 'UsersController@verifyEmail');
+    $router->post('notifications', 'NotificationController@create');
 });
 
 
@@ -62,7 +63,7 @@ $router->group(['prefix' => 'api/v1', 'middleware' => 'auth'], function ($router
     $router->post('user/discard/{userID}', 'UsersController@discard_user');
 
     //Notification  Routes
-    $router->post('notifications', 'NotificationController@create');
+    
     $router->get('notifications/unread/{userID}','NotificationController@getUnreadNotifications');
     $router->get('notifications/read/{userID}','NotificationController@getReadNotifications');
     $router->get('notifications/all/{userID}','NotificationController@getAllNotifications');
