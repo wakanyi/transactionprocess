@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterPermissions extends Migration
+class BeneficiariesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,13 @@ class AlterPermissions extends Migration
      */
     public function up()
     {
-        Schema::table('permissions', function (Blueprint $table) {
-            $table->string('slug');
+        Schema::create('beneficiaries', function (Blueprint $table) {
+            $table->id();
+            $table->string('fullName');
+            $table->string('amount');
+            $table->string('acc');
+            $table->string('ref');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +30,6 @@ class AlterPermissions extends Migration
      */
     public function down()
     {
-        Schema::table('permissions', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('beneficiaries');
     }
 }

@@ -16,7 +16,7 @@ class TokenMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $secretkey = "impoexpo2020"; 
+        $secretkey = "nbc_process"; 
         $decoded = '';
         //dd($request->hasHeader('authorization'));
         if ($request->hasHeader('authorization') === true) {

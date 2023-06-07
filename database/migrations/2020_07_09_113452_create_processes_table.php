@@ -14,10 +14,12 @@ class CreatePermissionsTable extends Migration
     public function up()
     {
         Schema::create('permissions', function (Blueprint $table) {
-            $table->id();
-            $table->string('permID')->unique();
-            $table->string('permission');
-            $table->boolean('publish')->default(0);
+            $table->integer('companyId')->unique();
+            $table->string('batchNo');
+            $table->string('batchDate');
+            $table->string('description');
+            $table->string('totalAmount');
+            $table->string('totalbeneficiaries');
             $table->timestamps();
         });
     }

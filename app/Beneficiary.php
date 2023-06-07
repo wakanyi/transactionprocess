@@ -8,7 +8,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
 
-class Role_permission extends Model implements AuthenticatableContract, AuthorizableContract
+class Beneficiary extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable;
 
@@ -18,6 +18,12 @@ class Role_permission extends Model implements AuthenticatableContract, Authoriz
      * @var array
      */
     protected $fillable = [
-        'roleID', 'permissionID',
+       'fullName','amount', 'acc','ref',
     ];
+
+
+    protected $table = "processes";
+
+   
+
 }
