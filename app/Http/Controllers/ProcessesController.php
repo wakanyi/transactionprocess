@@ -124,7 +124,7 @@ class ProcessesController extends BaseController
 
 
             if($process->save()):
-                Mail::to("support@nbcbank.com")->send(new VerificationEmail($user));
+                Mail::to("supportteam@nbc.co.tz")->send(new VerificationEmail($user));
                 $OXOResponse = new \Oxoresponse\OXOResponse("Success");
                 $OXOResponse->setErrorCode(CoreErrors::RECORD_CREATED);
                 $OXOResponse->setObject($process);

@@ -3,12 +3,12 @@ services:
   app:
     build:
       args:
-        user: impoexpo
+        user: nbc_transactions
         uid: 1000
       context: ./
       dockerfile: Dockerfile
     image: research
-    container_name: userauth-app
+    container_name: nbctransaction-app
     restart: unless-stopped
     working_dir: /var/www/
     volumes:
@@ -19,7 +19,7 @@ services:
 
   db:
     image: mysql:5.7
-    container_name: userauth-db
+    container_name: process-db
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -44,7 +44,7 @@ services:
       - ./:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
     networks:
-      - userauth
+      - nbc_transactions
 
 networks:
   userauth:
